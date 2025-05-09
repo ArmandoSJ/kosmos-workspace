@@ -1,6 +1,7 @@
 package com.technologyos.ClinicManager.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.technologyos.ClinicManager.dtos.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,14 @@ public class AppointmentEntity {
    @Column(name = "doctor_id", nullable = false)
    private Long doctorId;
 
+   @Enumerated(EnumType.STRING)
+   private AppointmentStatus status;
+
+   @Column(name = "appointment_time")
+   private LocalDateTime appointmentTime;
+
+   private String patientName;
+
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "clinic_id", insertable = false, updatable = false)
    private ClinicEntity clinic;
@@ -35,9 +44,6 @@ public class AppointmentEntity {
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "doctor_id", insertable = false, updatable = false)
    private DoctorEntity doctor;
-
-   private LocalDateTime appointmentTime;
-   private String patientName;
 
    @CreationTimestamp
    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")

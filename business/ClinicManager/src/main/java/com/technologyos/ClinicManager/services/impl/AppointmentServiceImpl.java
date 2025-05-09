@@ -1,5 +1,6 @@
 package com.technologyos.ClinicManager.services.impl;
 
+import com.technologyos.ClinicManager.dtos.enums.AppointmentStatus;
 import com.technologyos.ClinicManager.dtos.request.AppointmentRequest;
 import com.technologyos.ClinicManager.entities.AppointmentEntity;
 import com.technologyos.ClinicManager.exceptions.ObjectNotFoundException;
@@ -48,6 +49,7 @@ public class AppointmentServiceImpl implements AppointmentService {
       appointment.setDoctorId(saveAppointment.getDoctorId());
       appointment.setAppointmentTime(saveAppointment.getAppointmentTime());
       appointment.setPatientName(saveAppointment.getPatientName());
+      appointment.setStatus(AppointmentStatus.PENDIENTE);
       return appointmentRepository.save(appointment);
    }
 
