@@ -1,4 +1,19 @@
-# Kosmos services
+<h1 align="center">Medical Clinic Services</h1>
+
+### Setting Up
+To use the system, it is necessary to start the services in a specific order. The process is detailed below:
+
+1. Start the Config Server
+* This service provides configuration for the system's microservices.
+
+2. Start Clinic Manager Server
+* This module provides the services
+
+**Important Note:** To start the services, it is necessary to configure the appropriate profile in the `application.yml` file of each project. The profiles are described below:
+
+**Local Profile:** When using this profile, the service will automatically use the H2 database, so it will not be necessary to start the PostgreSQL database container.
+
+**Dev Profile:** If this profile is configured, you will need to follow the steps outlined to create and start the database container.
 
 ### Steps to setting up the database
 
