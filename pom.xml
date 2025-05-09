@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.technologyos</groupId>
+  <artifactId>kosmos-workspace</artifactId>
+  <name>kosmos-workspace</name>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>business</module>
+    <module>infrastructure</module>
+  </modules>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <spring-boot.version>3.4.4</spring-boot.version>
+    <spring-cloud.version>2024.0.0</spring-cloud.version>
+    <lombok.version>1.18.36</lombok.version>
+    <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
+    <skip.docker>true</skip.docker>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <!--If want exclude junit4 and use only junit5-->
+      <exclusions>
+        <exclusion>
+          <groupId>org.junit.vintage</groupId>
+          <artifactId>junit-vintage-engine</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!--
+          This plugin is used to execute unit tests during the Maven project build process.
+          useSystemClassLoader: Set to false to avoid using the system ClassLoader.
+          skipTests: Set to true to skip the execution of unit tests.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        <configuration>
+          <useSystemClassLoader>false</useSystemClassLoader>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+
+      <!--
+          This plugin allows packaging the Spring Boot project as an executable JAR or WAR file.
+          repackage: Defines the goal to repackage the project.
+      -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--
+          This plugin enables building and managing Docker images during the Maven project build process.
+          build-docker-image: Defines an execution that builds the Docker image.
+          repository: Specifies the repository where the Docker image will be stored.
+          tag: Specifies the tag of the Docker image.
+          buildArgs: Build arguments for the Docker image.
+      -->
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>${dockerfile-maven-version}</version>
+        <executions>
+          <execution>
+            <id>build-docker-image</id>
+            <phase>package</phase>
+            <goals>
+              <goal>build</goal>
+              <!--<goal>push</goal>-->
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <repository>kosmos/microservice-docker-${project.artifactId}</repository>
+          <tag>${project.version}</tag>
+          <buildArgs>
+            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+          </buildArgs>
+          <skip>${skip.docker}</skip>
+        </configuration>
+      </plugin>
+
+      <!--
+         This plugin is used to generate and deploy the Maven project website.
+         locales: Defines the languages in which the website will be generated (in this case, Spanish and English).
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.9.1</version>
+        <configuration>
+          <locales>es,en</locales>
+        </configuration>
+      </plugin>
+
+      <!--
+         This plugin is used to generate JavaDoc documentation from the Maven project's source code.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.2.0</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>enable-docker</id>
+      <activation>
+        <file>
+          <exists>Dockerfile</exists>
+        </file>
+      </activation>
+      <properties>
+        <skip.docker>false</skip.docker>
+      </properties>
+    </profile>
+  </profiles>
+</project>
