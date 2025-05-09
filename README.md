@@ -39,3 +39,115 @@ After completing the details, click "Save" to establish the connection.
 
 **Note:** Remember that these details are stored in the `.env`, file, where your credentials were previously configured.
 
+---
+Services
+
+# Doctors
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/doctors?page=0&size=5' \
+  --header 'Content-Type: application/json' \
+```
+
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/doctors/1?=' \
+  --header 'Content-Type: application/json' \
+```
+
+```shell
+curl --request POST \
+  --url http://localhost:8081/api/v1/doctors \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"name": "Armando",
+	"lastNamePaternal": "Salazar",
+	"lastNameMaternal":"Jauregui",
+	"specialty": "Medicina Interna"
+}'
+```
+
+```shell
+curl --request PUT \
+  --url http://localhost:8081/api/v1/doctors/1 \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"name": "Armando",
+	"lastNamePaternal": "Salazar",
+	"lastNameMaternal":"Jauregui",
+	"specialty": "Medicina Interna"
+}'
+```
+# Clinics
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/clinics?page=0&size=5' \
+  --header 'Content-Type: application/json' \
+```
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/clinics/1?=' \
+  --header 'Content-Type: application/json' \
+```
+
+```shell
+curl --request POST \
+  --url http://localhost:8081/api/v1/clinics \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"roomNumber": "23",
+	"floor": 2
+}'
+```
+
+```shell
+curl --request PUT \
+  --url http://localhost:8081/api/v1/clinics/1 \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"roomNumber": "24",
+	"floor": 2
+}'
+```
+
+# Appointments
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/appointments?page=0&size=5' \
+  --header 'Content-Type: application/json' \
+```
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/appointments/2?=' \
+  --header 'Content-Type: application/json' \
+```
+
+```shell
+curl --request POST \
+  --url http://localhost:8081/api/v1/appointments \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "clinic_id": 1,
+  "doctor_id": 1,
+  "appointmentTime": "2025-05-10T15:30:00",
+  "patientName": "Juan Pérez"
+}'
+```
+
+```shell
+curl --request PUT \
+  --url http://localhost:8081/api/v1/appointments/2 \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "clinic_id": 1,
+  "doctor_id": 1,
+  "appointmentTime": "2025-05-10T15:30:00",
+  "patientName": "Juan Pérez"
+}'
+```
