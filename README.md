@@ -151,3 +151,15 @@ curl --request PUT \
   "patientName": "Juan Pérez"
 }'
 ```
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/appointments/room/14?=' \
+  --header 'Content-Type: application/json' \
+```
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/appointments/doctor/Armando?=' \
+  --header 'Content-Type: application/json' \
+```

@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/appointments")
 @AllArgsConstructor
@@ -37,6 +39,16 @@ public class AppointmentController {
       return ResponseEntity.ok(appointmentService.findAppointmentById(appointmentId));
    }
 
+   @GetMapping("/room/{roomNumber}")
+   public ResponseEntity<List<AppointmentEntity>> findAppointmentByRoomNumber(@PathVariable("roomNumber") String roomNumber){
+      return ResponseEntity.ok(appointmentService.findAppointmentByRoomNumber(roomNumber));
+   }
+
+   @GetMapping("/doctor/{doctorName}")
+   public ResponseEntity<List<AppointmentEntity>> findAppointmentByDoctorName(@PathVariable("doctorName") String doctorName){
+      return ResponseEntity.ok(appointmentService.findAppointmentByDoctorName(doctorName));
+   }
+
    @PostMapping
    public ResponseEntity<AppointmentEntity> createAppointment(@RequestBody @Valid AppointmentRequest saveAppointment){
       AppointmentEntity appointment = appointmentService.createAppointment(saveAppointment);
@@ -45,7 +57,7 @@ public class AppointmentController {
 
    @PutMapping("/{appointmentId}")
    public ResponseEntity<AppointmentEntity> updateAppointmentById(@PathVariable("appointmentId") Long appointmentId ,
-                                                             @RequestBody @Valid AppointmentRequest saveAppointment){
+                                                                  @RequestBody @Valid AppointmentRequest saveAppointment){
       AppointmentEntity appointment = appointmentService.updateAppointmentById(appointmentId, saveAppointment);
       return ResponseEntity.ok(appointment);
    }

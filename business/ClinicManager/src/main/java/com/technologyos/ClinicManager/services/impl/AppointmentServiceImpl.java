@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,6 +23,16 @@ public class AppointmentServiceImpl implements AppointmentService {
    @Override
    public Page<AppointmentEntity> findAll(Pageable pageable) {
       return appointmentRepository.findAll(pageable);
+   }
+
+   @Override
+   public List<AppointmentEntity> findAppointmentByRoomNumber(String roomNumber) {
+      return appointmentRepository.findByRoomNumber(roomNumber);
+   }
+
+   @Override
+   public List<AppointmentEntity> findAppointmentByDoctorName(String name) {
+      return appointmentRepository.findByDoctorName(name);
    }
 
    @Override
