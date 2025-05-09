@@ -22,16 +22,21 @@ public class AppointmentEntity {
    @Column(nullable = false)
    private Long appointmentId;
 
-   @ManyToOne
-   @JoinColumn(name = "clinic_id", nullable = false)
+   @Column(name = "clinic_id", nullable = false)
+   private Long clientId;
+
+   @Column(name = "doctor_id", nullable = false)
+   private Long doctorId;
+
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "clinic_id", insertable = false, updatable = false)
    private ClinicEntity clinic;
 
-   @ManyToOne
-   @JoinColumn(name = "doctor_id", nullable = false)
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "doctor_id", insertable = false, updatable = false)
    private DoctorEntity doctor;
 
    private LocalDateTime appointmentTime;
-
    private String patientName;
 
    @CreationTimestamp

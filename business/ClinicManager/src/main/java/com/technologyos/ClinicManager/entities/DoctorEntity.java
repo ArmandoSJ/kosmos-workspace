@@ -19,7 +19,7 @@ import java.util.Objects;
 public class DoctorEntity {
    @Id
    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctors_seq")
-   @Column(nullable = false)
+   @Column(name = "doctor_id", nullable = false)
    private Long doctorId;
    private String name;
    private String lastNamePaternal;
