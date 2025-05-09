@@ -23,7 +23,7 @@ public class AppointmentEntity {
    private Long appointmentId;
 
    @Column(name = "clinic_id", nullable = false)
-   private Long clientId;
+   private Long clinicId;
 
    @Column(name = "doctor_id", nullable = false)
    private Long doctorId;
