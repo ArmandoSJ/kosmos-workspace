@@ -1,6 +1,8 @@
 package com.technologyos.ClinicManager.repositories;
 
 import com.technologyos.ClinicManager.entities.AppointmentEntity;
+import com.technologyos.ClinicManager.entities.ClinicEntity;
+import com.technologyos.ClinicManager.entities.DoctorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,6 +25,17 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
 
    @Query("SELECT a FROM AppointmentEntity a WHERE a.doctor.name = :doctorName")
    List<AppointmentEntity> findByDoctorName(@Param("doctorName") String doctorName);
+
+   @Query("""
+    SELECT COUNT(a) FROM AppointmentEntity a
+    WHERE a.doctor.name = :doctorName
+    AND a.appointmentTime BETWEEN :start AND :end
+   """)
+   long countAppointmentsByDoctorNameAndDate(
+      @Param("doctorName") String doctorName,
+      @Param("start") LocalDateTime start,
+      @Param("end") LocalDateTime end
+   );
 
    @Query(value = """
     SELECT EXISTS (
@@ -70,5 +83,45 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
       @Param("doctorId") Long doctorId,
       @Param("startOfDay") LocalDateTime startOfDay,
       @Param("endOfDay") LocalDateTime endOfDay
+   );
+
+   //-------------/
+   @Query("""
+    SELECT COUNT(a) > 0 FROM AppointmentEntity a
+    WHERE a.clinic = :clinic
+      AND a.appointmentTime = :appointmentTime
+      AND a.appointmentId <> :appointmentId
+   """)
+   boolean existsByClinicAndTimeExcludingId(
+      @Param("clinic") ClinicEntity clinic,
+      @Param("appointmentTime") LocalDateTime appointmentTime,
+      @Param("appointmentId") Long appointmentId
+   );
+
+   @Query("""
+    SELECT COUNT(a) > 0 FROM AppointmentEntity a
+    WHERE a.doctor = :doctor
+      AND a.appointmentTime = :appointmentTime
+      AND a.appointmentId <> :appointmentId
+   """)
+   boolean existsByDoctorAndTimeExcludingId(
+      @Param("doctor") DoctorEntity doctor,
+      @Param("appointmentTime") LocalDateTime appointmentTime,
+      @Param("appointmentId") Long appointmentId
+   );
+
+   @Query("""
+    SELECT COUNT(a) > 0 FROM AppointmentEntity a
+    WHERE a.patientName = :patientName
+      AND FUNCTION('DATE', a.appointmentTime) = FUNCTION('DATE', :appointmentTime)
+      AND ABS(
+        EXTRACT(EPOCH FROM a.appointmentTime) - EXTRACT(EPOCH FROM :appointmentTime)
+      ) < 7200
+      AND a.appointmentId <> :appointmentId
+   """)
+   boolean existsConflictForPatientEdit(
+      @Param("patientName") String patientName,
+      @Param("appointmentTime") LocalDateTime appointmentTime,
+      @Param("appointmentId") Long appointmentId
    );
 }

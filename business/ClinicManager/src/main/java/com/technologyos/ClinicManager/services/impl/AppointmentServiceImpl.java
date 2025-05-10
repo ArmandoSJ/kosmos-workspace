@@ -12,9 +12,7 @@ import com.technologyos.ClinicManager.services.AppointmentService;
 import com.technologyos.ClinicManager.services.ClinicService;
 import com.technologyos.ClinicManager.services.DoctorService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContextException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,6 +31,21 @@ public class AppointmentServiceImpl implements AppointmentService {
    @Override
    public Page<AppointmentEntity> findAll(Pageable pageable) {
       return appointmentRepository.findAll(pageable);
+   }
+
+   @Override
+   public List<AppointmentEntity> findAppointmentByDate(LocalDateTime dateTime) {
+      LocalDateTime startOfDay = dateTime.toLocalDate().atStartOfDay();
+      LocalDateTime endOfDay = startOfDay.plusDays(1).minusSeconds(1);
+
+      return appointmentRepository.findByDate(startOfDay, endOfDay);
+   }
+
+   @Override
+   public Long findAppointmentsByDoctorNameAndDate(String doctorName, LocalDateTime dateTime) {
+      LocalDateTime startOfDay = dateTime.toLocalDate().atStartOfDay();
+      LocalDateTime endOfDay = startOfDay.plusDays(1).minusSeconds(1);
+      return appointmentRepository.countAppointmentsByDoctorNameAndDate(doctorName, startOfDay, endOfDay);
    }
 
    @Override
@@ -96,5 +109,46 @@ public class AppointmentServiceImpl implements AppointmentService {
       return appointmentRepository.save(appointment);
    }
 
+   @Override
+   public void cancelAppointment(Long appointmentId) {
+      AppointmentEntity appointment = this.findAppointmentById(appointmentId);
 
+      if (appointment.getAppointmentTime().isBefore(LocalDateTime.now())) {
+         throw new IllegalStateException("No se puede cancelar una cita pasada.");
+      }
+
+      appointment.setStatus(AppointmentStatus.CANCELADA);
+      appointmentRepository.save(appointment);
+   }
+
+   @Override
+   public void updateAppointment(Long appointmentId, AppointmentRequest newData) {
+      AppointmentEntity appointment = this.findAppointmentById(appointmentId);
+
+      if (appointment.getAppointmentTime().isBefore(LocalDateTime.now())) {
+         throw new IllegalStateException("No se puede editar una cita ya realizada.");
+      }
+
+      ClinicEntity clinic = clinicService.findClinicById(newData.getClinicId());
+      DoctorEntity doctor = doctorService.findDoctorById(newData.getDoctorId());
+
+      boolean conflictClinic = appointmentRepository.existsByClinicAndTimeExcludingId(
+         clinic, newData.getAppointmentTime(), appointmentId);
+
+      boolean conflictDoctor = appointmentRepository.existsByDoctorAndTimeExcludingId(
+         doctor, newData.getAppointmentTime(), appointmentId);
+
+      boolean conflictPatient = appointmentRepository.existsConflictForPatientEdit(
+         newData.getPatientName(), newData.getAppointmentTime(), appointmentId);
+
+      if (conflictClinic || conflictDoctor || conflictPatient) {
+         throw new IllegalStateException("Conflicto con otra cita.");
+      }
+
+      appointment.setAppointmentTime(newData.getAppointmentTime());
+      appointment.setClinicId(newData.getClinicId());
+      appointment.setDoctorId(newData.getDoctorId());
+      appointment.setPatientName(newData.getPatientName());
+      appointmentRepository.save(appointment);
+   }
 }
