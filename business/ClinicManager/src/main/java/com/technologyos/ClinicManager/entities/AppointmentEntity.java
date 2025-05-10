@@ -19,7 +19,7 @@ import java.util.Objects;
 @ToString
 public class AppointmentEntity {
    @Id
-   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointments_sequence")
+   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointments_seq")
    @Column(nullable = false)
    private Long appointmentId;
 

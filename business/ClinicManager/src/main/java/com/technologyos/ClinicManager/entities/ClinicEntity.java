@@ -19,7 +19,7 @@ import java.util.Objects;
 public class ClinicEntity {
 
    @Id
-   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clinics_sequence")
+   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clinics_seq")
    @Column(nullable = false)
    private Long clinicId;
    private String roomNumber;
