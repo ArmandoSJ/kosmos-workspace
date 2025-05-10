@@ -68,23 +68,14 @@ public class AppointmentController {
    @PutMapping("/{appointmentId}")
    public ResponseEntity<String> updateAppointment(@PathVariable("appointmentId") Long appointmentId ,
                                                    @RequestBody @Valid AppointmentRequest saveAppointment){
-      try {
-         appointmentService.cancelAppointment(appointmentId);
-         return ResponseEntity.ok("Appointment cancelled successfully.");
-      } catch (Exception e) {
-         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to cancel appointment.");
-      }
+      appointmentService.updateAppointment(appointmentId, saveAppointment);
+      return ResponseEntity.ok("Appointment updated successfully.");
    }
 
    @DeleteMapping("/{appointmentId}")
-   public ResponseEntity<String> cancelAppointment(@PathVariable("appointmentId") Long appointmentId,
-                                                   @RequestBody AppointmentRequest newData){
-      try {
-         appointmentService.updateAppointment(appointmentId, newData);
-         return ResponseEntity.ok("Appointment updated successfully.");
-      } catch (Exception e) {
-         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update appointment.");
-      }
+   public ResponseEntity<String> cancelAppointment(@PathVariable("appointmentId") Long appointmentId){
+      appointmentService.cancelAppointment(appointmentId);
+      return ResponseEntity.ok("Appointment cancelled successfully.");
    }
 
 }

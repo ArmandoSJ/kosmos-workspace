@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -114,7 +116,7 @@ public class AppointmentServiceImpl implements AppointmentService {
       AppointmentEntity appointment = this.findAppointmentById(appointmentId);
 
       if (appointment.getAppointmentTime().isBefore(LocalDateTime.now())) {
-         throw new IllegalStateException("No se puede cancelar una cita pasada.");
+         throw new AppointmentException("No se puede cancelar una cita pasada.");
       }
 
       appointment.setStatus(AppointmentStatus.CANCELADA);
@@ -142,7 +144,7 @@ public class AppointmentServiceImpl implements AppointmentService {
          newData.getPatientName(), newData.getAppointmentTime(), appointmentId);
 
       if (conflictClinic || conflictDoctor || conflictPatient) {
-         throw new IllegalStateException("Conflicto con otra cita.");
+         throw new AppointmentException("Conflicto con otra cita.");
       }
 
       appointment.setAppointmentTime(newData.getAppointmentTime());

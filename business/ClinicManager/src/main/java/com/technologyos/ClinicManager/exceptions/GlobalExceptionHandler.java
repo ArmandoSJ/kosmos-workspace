@@ -37,4 +37,16 @@ public class GlobalExceptionHandler {
          .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
    }
+
+   @ExceptionHandler(AppointmentException.class)
+   public ResponseEntity<?> handlerAppointmentException(HttpServletRequest request, AppointmentException exception){
+      ApiError apiError = ApiError.builder()
+         .backendMessage(exception.getLocalizedMessage())
+         .url(request.getRequestURL().toString())
+         .method(request.getMethod())
+         .message("Error en la petición enviada")
+         .timestamp(LocalDateTime.now())
+         .build();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+   }
 }
