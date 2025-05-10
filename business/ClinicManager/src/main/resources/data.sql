@@ -1,3 +1,6 @@
+ALTER SEQUENCE doctors_sequence RESTART WITH 1;
+ALTER SEQUENCE clinics_sequence RESTART WITH 1;
+
 INSERT INTO doctors(doctor_id, name, last_name_paternal, last_name_maternal, specialty) VALUES
 (nextval('doctors_sequence'), 'Armando', 'Salazar', 'Jauregui', 'Medicina Interna'),
 (nextval('doctors_sequence'), 'Miriam', 'Garcia', 'Flores', 'Cardiología'),
