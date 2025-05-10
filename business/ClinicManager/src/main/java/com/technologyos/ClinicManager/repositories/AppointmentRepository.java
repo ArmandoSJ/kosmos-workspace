@@ -16,7 +16,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
    """)
    List<AppointmentEntity> findByDate(@Param("startOfDay") LocalDateTime startOfDay,
                                       @Param("endOfDay") LocalDateTime endOfDay);
-   
+
    @Query("SELECT a FROM AppointmentEntity a WHERE a.clinic.roomNumber = :roomNumber")
    List<AppointmentEntity> findByRoomNumber(@Param("roomNumber") String roomNumber);
 

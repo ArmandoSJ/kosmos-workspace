@@ -163,3 +163,63 @@ curl --request GET \
   --url 'http://localhost:8081/api/v1/appointments/doctor/Armando?=' \
   --header 'Content-Type: application/json' \
 ```
+### Appointment Scheduling Cases
+
+#### Caso inicial valores correcto
+
+```shell
+curl --request POST \
+  --url http://localhost:8081/api/v1/appointments \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "clinic_id": 1,
+    "doctor_id": 1,
+    "appointmentTime": "2025-05-10T16:30:00",
+    "patientName": "Juan Pérez"
+  }'
+```
+
+#### No se puede agendar cita en un mismo consultorio a la misma hora.
+
+```shell
+curl --request POST \
+  --url http://localhost:8081/api/v1/appointments \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "clinic_id": 1,
+    "doctor_id": 1,
+    "appointmentTime": "2025-05-10T16:30:00",
+    "patientName": "Jose Armando"
+  }'
+```
+
+
+#### El doctor ya tiene una cita a esa hora.
+
+```shell
+curl --request POST \
+  --url http://localhost:8081/api/v1/appointments \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "clinic_id": 3,
+    "doctor_id": 1,
+    "appointmentTime": "2025-05-11T16:30:00",
+    "patientName": "Jose Armando"
+  }'
+```
+#### El paciente tiene otra cita demasiado cercana.
+
+```shell
+curl --request POST \
+  --url http://localhost:8081/api/v1/appointments \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "clinic_id": 3,
+    "doctor_id": 2,
+    "appointmentTime": "2025-05-11T16:30:00",
+    "patientName": "Jose Armando"
+  }'
+```
+
+
+
