@@ -28,7 +28,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
 
    @Query("""
     SELECT COUNT(a) FROM AppointmentEntity a
-    WHERE a.doctor.name = :doctorName
+    WHERE LOWER(a.doctor.name) = LOWER(:doctorName)
     AND a.appointmentTime BETWEEN :start AND :end
    """)
    long countAppointmentsByDoctorNameAndDate(

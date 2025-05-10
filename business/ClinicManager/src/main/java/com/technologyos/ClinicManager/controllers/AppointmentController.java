@@ -44,8 +44,8 @@ public class AppointmentController {
    }
 
    @GetMapping("/by-doctor")
-   public ResponseEntity<Long> findAppointmentByDate(@RequestParam String doctorName,
-                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date){
+   public ResponseEntity<Long> findAppointmentsByDoctorNameAndDate(@RequestParam("doctorName") String doctorName,
+                                                                   @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date){
       return ResponseEntity.ok(appointmentService.findAppointmentsByDoctorNameAndDate(doctorName, date));
    }
 

@@ -152,17 +152,37 @@ curl --request PUT \
 }'
 ```
 
+**Consultar por numero de habitacion**
+
 ```shell
 curl --request GET \
   --url 'http://localhost:8081/api/v1/appointments/room/14?=' \
   --header 'Content-Type: application/json' \
 ```
+**Consultar por nombre del doctor**
 
 ```shell
 curl --request GET \
   --url 'http://localhost:8081/api/v1/appointments/doctor/Armando?=' \
   --header 'Content-Type: application/json' \
 ```
+
+**Consultar por fecha**
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/appointments/date/2025-05-10T16:30:00?=' \
+  --header 'Content-Type: application/json' \
+```
+
+**Saber cuántas citas tengo hoy o mañana**
+
+```shell
+curl --request GET \
+  --url 'http://localhost:8081/api/v1/appointments/by-doctor?doctorName=Armando&date=2025-05-10T16%3A30%3A00' \
+  --header 'Content-Type: application/json' \
+```
+
 ### Appointment Scheduling Cases
 
 #### Caso inicial valores correcto
