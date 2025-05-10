@@ -183,6 +183,14 @@ curl --request GET \
   --header 'Content-Type: application/json' \
 ```
 
+**Cancel an appointment**
+
+```shell
+curl --request DELETE \
+--url 'http://localhost:8081/api/v1/appointments/1?=' \
+--header 'Content-Type: application/json' \
+```
+
 ### Appointment Scheduling Cases
 
 #### Caso inicial valores correcto
