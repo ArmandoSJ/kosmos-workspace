@@ -16,7 +16,9 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>commons</module>
     <module>ClinicManager</module>
+    <module>auth</module>
   </modules>
 
   <properties>
