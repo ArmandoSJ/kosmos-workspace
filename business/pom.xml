@@ -17,7 +17,7 @@
 
   <modules>
     <module>commons</module>
-    <module>ClinicManager</module>
+    <module>clinic-manager</module>
     <module>auth</module>
   </modules>
 
