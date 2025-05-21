@@ -5,12 +5,13 @@ import com.technologyos.ClinicManager.dtos.request.AppointmentRequest;
 import com.technologyos.ClinicManager.entities.AppointmentEntity;
 import com.technologyos.ClinicManager.entities.ClinicEntity;
 import com.technologyos.ClinicManager.entities.DoctorEntity;
-import com.technologyos.ClinicManager.exceptions.AppointmentException;
-import com.technologyos.ClinicManager.exceptions.ObjectNotFoundException;
+
 import com.technologyos.ClinicManager.repositories.AppointmentRepository;
 import com.technologyos.ClinicManager.services.AppointmentService;
 import com.technologyos.ClinicManager.services.ClinicService;
 import com.technologyos.ClinicManager.services.DoctorService;
+import com.technologyos.commons.exceptions.AppointmentException;
+import com.technologyos.commons.exceptions.ObjectNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,8 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service

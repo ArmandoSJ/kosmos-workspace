@@ -2,9 +2,9 @@ package com.technologyos.ClinicManager.services.impl;
 
 import com.technologyos.ClinicManager.dtos.request.ClinicRequest;
 import com.technologyos.ClinicManager.entities.ClinicEntity;
-import com.technologyos.ClinicManager.exceptions.ObjectNotFoundException;
 import com.technologyos.ClinicManager.repositories.ClinicRepository;
 import com.technologyos.ClinicManager.services.ClinicService;
+import com.technologyos.commons.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
