@@ -8,7 +8,7 @@ import com.technologyos.commons.entities.Operation;
 import com.technologyos.commons.entities.Role;
 import com.technologyos.commons.exceptions.ObjectNotFoundException;
 import com.technologyos.commons.repositories.OperationRepository;
-import com.technologyos.commons.repositories.PermissionRepository;
+import com.technologyos.auth.repositories.PermissionRepository;
 import com.technologyos.commons.repositories.RoleRepository;
 
 import lombok.AllArgsConstructor;
