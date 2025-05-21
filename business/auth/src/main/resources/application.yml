@@ -13,4 +13,4 @@ spring:
       username: admin
       password: admin
       name: db
-      profile: local
+      profile: dev
